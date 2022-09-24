@@ -1,27 +1,48 @@
-from ast import keyword
-from socket import SO_VM_SOCKETS_BUFFER_MIN_SIZE
-from typing_extensions import Self
-from urllib import response
-import requests,threading
+# CALLBACKS 
 
-def get_service1():
-    pass
+import requests
+import threading
+
+def get_services1(response_json_data):
+    name = response_json_data.get('results')[0].get('name').get('first')
+    print(name)
+
+
 def get_error1():
-    pass
-def request_data(url):
-    response= requests.get(url)
+    print('Error')
+
+
+def get_services2(response_json_data):
+    name = response_json_data.get('results')[0].get('name').get('first')
+    print(name)
+
+
+def get_error2():
+    print('Error')
+
+
+def request_data(url, success_callback, error_callback):
+    response = requests.get(url)
     if response.status_code == 200:
         success_callback(response.json())
-    else
-        error_callback
+    else:
+        error_callback()
 
-class Hilo(threading.Thread):
+
+class Thread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         
-        def run(self)
-        h1=threading.Thread(target=request_data,
-        kwargs={
-            'url':''
-            'success_callback':,
-        })
+    def run(self):
+        h1 = threading.Thread(target=request_data, kwargs={'url':'https://randomuser.me/api/',
+            'success_callback': get_services1, 
+            'error_callback': get_error1})
+        h1.start()
+
+        h2 = threading.Thread(target=request_data, kwargs={'url':'https://randomuser.me/api/',
+            'success_callback': get_services2, 
+            'error_callback': get_error2})
+        h2.start()
+
+t = Thread()
+t.start()
